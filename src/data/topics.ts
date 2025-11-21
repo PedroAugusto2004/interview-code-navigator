@@ -12,6 +12,16 @@ export interface Topic {
     solution: string[];
   };
   visualization?: string;
+  codeExample?: {
+    examples: {
+      language: string;
+      code: string;
+    }[];
+    complexity?: {
+      time: string;
+      space: string;
+    };
+  };
 }
 
 export const topicsData: Topic[] = [
@@ -40,7 +50,53 @@ export const topicsData: Topic[] = [
         "If it matches → done"
       ]
     },
-    visualization: "Two pointers moving from both ends toward center"
+    visualization: "Two pointers moving from both ends toward center",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `def two_sum(nums, target):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        current_sum = nums[left] + nums[right]
+        
+        if current_sum == target:
+            return [left, right]
+        elif current_sum < target:
+            left += 1
+        else:
+            right -= 1
+    
+    return []  # No solution found`
+        },
+        {
+          language: "JavaScript",
+          code: `function twoSum(nums, target) {
+    let left = 0;
+    let right = nums.length - 1;
+    
+    while (left < right) {
+        const currentSum = nums[left] + nums[right];
+        
+        if (currentSum === target) {
+            return [left, right];
+        } else if (currentSum < target) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+    
+    return [];  // No solution found
+}`
+        }
+      ],
+      complexity: {
+        time: "O(n)",
+        space: "O(1)"
+      }
+    }
   },
   {
     id: "sliding-window",
@@ -69,7 +125,52 @@ export const topicsData: Topic[] = [
         "Track the longest window"
       ]
     },
-    visualization: "A window sliding across an array, expanding and contracting"
+    visualization: "A window sliding across an array, expanding and contracting",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `def longest_substring_without_repeating(s):
+    char_set = set()
+    left = 0
+    max_length = 0
+    
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length`
+        },
+        {
+          language: "JavaScript",
+          code: `function longestSubstring(s) {
+    const charSet = new Set();
+    let left = 0;
+    let maxLength = 0;
+    
+    for (let right = 0; right < s.length; right++) {
+        while (charSet.has(s[right])) {
+            charSet.delete(s[left]);
+            left++;
+        }
+        
+        charSet.add(s[right]);
+        maxLength = Math.max(maxLength, right - left + 1);
+    }
+    
+    return maxLength;
+}`
+        }
+      ],
+      complexity: {
+        time: "O(n)",
+        space: "O(min(n, m))"
+      }
+    }
   },
   {
     id: "hash-map",
@@ -95,7 +196,42 @@ export const topicsData: Topic[] = [
         "Use a map → when you see the second time → return it"
       ]
     },
-    visualization: "A key-value store for instant lookups"
+    visualization: "A key-value store for instant lookups",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `def first_duplicate(nums):
+    seen = {}
+    
+    for num in nums:
+        if num in seen:
+            return num
+        seen[num] = True
+    
+    return -1  # No duplicate found`
+        },
+        {
+          language: "JavaScript",
+          code: `function firstDuplicate(nums) {
+    const seen = new Map();
+    
+    for (const num of nums) {
+        if (seen.has(num)) {
+            return num;
+        }
+        seen.set(num, true);
+    }
+    
+    return -1;  // No duplicate found
+}`
+        }
+      ],
+      complexity: {
+        time: "O(n)",
+        space: "O(n)"
+      }
+    }
   },
   {
     id: "sorting-greedy",
@@ -123,7 +259,50 @@ export const topicsData: Topic[] = [
         "Always pick the next meeting that ends the fastest"
       ]
     },
-    visualization: "Sorted items with greedy selection highlighted"
+    visualization: "Sorted items with greedy selection highlighted",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `def max_meetings(meetings):
+    # Sort by end time
+    meetings.sort(key=lambda x: x[1])
+    
+    count = 0
+    last_end = 0
+    
+    for start, end in meetings:
+        if start >= last_end:
+            count += 1
+            last_end = end
+    
+    return count`
+        },
+        {
+          language: "JavaScript",
+          code: `function maxMeetings(meetings) {
+    // Sort by end time
+    meetings.sort((a, b) => a[1] - b[1]);
+    
+    let count = 0;
+    let lastEnd = 0;
+    
+    for (const [start, end] of meetings) {
+        if (start >= lastEnd) {
+            count++;
+            lastEnd = end;
+        }
+    }
+    
+    return count;
+}`
+        }
+      ],
+      complexity: {
+        time: "O(n log n)",
+        space: "O(1)"
+      }
+    }
   },
   {
     id: "binary-search",
@@ -152,7 +331,53 @@ export const topicsData: Topic[] = [
         "Repeat until found"
       ]
     },
-    visualization: "Repeatedly dividing array in half"
+    visualization: "Repeatedly dividing array in half",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return -1  # Not found`
+        },
+        {
+          language: "JavaScript",
+          code: `function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1;  // Not found
+}`
+        }
+      ],
+      complexity: {
+        time: "O(log n)",
+        space: "O(1)"
+      }
+    }
   },
   {
     id: "dfs",
@@ -182,7 +407,74 @@ export const topicsData: Topic[] = [
         "Count each DFS start as a new island"
       ]
     },
-    visualization: "Tree traversal going deep first"
+    visualization: "Tree traversal going deep first",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `def count_islands(grid):
+    if not grid:
+        return 0
+    
+    def dfs(i, j):
+        if (i < 0 or i >= len(grid) or 
+            j < 0 or j >= len(grid[0]) or 
+            grid[i][j] == '0'):
+            return
+        
+        grid[i][j] = '0'  # Mark as visited
+        dfs(i+1, j)
+        dfs(i-1, j)
+        dfs(i, j+1)
+        dfs(i, j-1)
+    
+    count = 0
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == '1':
+                dfs(i, j)
+                count += 1
+    
+    return count`
+        },
+        {
+          language: "JavaScript",
+          code: `function countIslands(grid) {
+    if (!grid || grid.length === 0) return 0;
+    
+    function dfs(i, j) {
+        if (i < 0 || i >= grid.length || 
+            j < 0 || j >= grid[0].length || 
+            grid[i][j] === '0') {
+            return;
+        }
+        
+        grid[i][j] = '0';  // Mark as visited
+        dfs(i + 1, j);
+        dfs(i - 1, j);
+        dfs(i, j + 1);
+        dfs(i, j - 1);
+    }
+    
+    let count = 0;
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[0].length; j++) {
+            if (grid[i][j] === '1') {
+                dfs(i, j);
+                count++;
+            }
+        }
+    }
+    
+    return count;
+}`
+        }
+      ],
+      complexity: {
+        time: "O(m × n)",
+        space: "O(m × n)"
+      }
+    }
   },
   {
     id: "bfs",
@@ -212,7 +504,69 @@ export const topicsData: Topic[] = [
         "First to reach end is shortest path"
       ]
     },
-    visualization: "Tree traversal expanding outward in waves"
+    visualization: "Tree traversal expanding outward in waves",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `from collections import deque
+
+def shortest_path(grid, start, end):
+    rows, cols = len(grid), len(grid[0])
+    queue = deque([(start[0], start[1], 0)])  # (row, col, distance)
+    visited = {start}
+    directions = [(0,1), (1,0), (0,-1), (-1,0)]
+    
+    while queue:
+        row, col, dist = queue.popleft()
+        
+        if (row, col) == end:
+            return dist
+        
+        for dr, dc in directions:
+            new_r, new_c = row + dr, col + dc
+            if (0 <= new_r < rows and 0 <= new_c < cols and
+                (new_r, new_c) not in visited and grid[new_r][new_c] != 1):
+                visited.add((new_r, new_c))
+                queue.append((new_r, new_c, dist + 1))
+    
+    return -1  # No path found`
+        },
+        {
+          language: "JavaScript",
+          code: `function shortestPath(grid, start, end) {
+    const rows = grid.length, cols = grid[0].length;
+    const queue = [[start[0], start[1], 0]];  // [row, col, distance]
+    const visited = new Set([\`\${start[0]},\${start[1]}\`]);
+    const directions = [[0,1], [1,0], [0,-1], [-1,0]];
+    
+    while (queue.length > 0) {
+        const [row, col, dist] = queue.shift();
+        
+        if (row === end[0] && col === end[1]) {
+            return dist;
+        }
+        
+        for (const [dr, dc] of directions) {
+            const newR = row + dr, newC = col + dc;
+            const key = \`\${newR},\${newC}\`;
+            if (newR >= 0 && newR < rows && newC >= 0 && newC < cols &&
+                !visited.has(key) && grid[newR][newC] !== 1) {
+                visited.add(key);
+                queue.push([newR, newC, dist + 1]);
+            }
+        }
+    }
+    
+    return -1;  // No path found
+}`
+        }
+      ],
+      complexity: {
+        time: "O(m × n)",
+        space: "O(m × n)"
+      }
+    }
   },
   {
     id: "backtracking",
@@ -243,7 +597,56 @@ export const topicsData: Topic[] = [
         "Collect all valid subsets"
       ]
     },
-    visualization: "Decision tree with backtracking paths"
+    visualization: "Decision tree with backtracking paths",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `def subsets(nums):
+    result = []
+    
+    def backtrack(start, current):
+        result.append(current[:])  # Add copy of current subset
+        
+        for i in range(start, len(nums)):
+            current.append(nums[i])  # Choose
+            backtrack(i + 1, current)  # Explore
+            current.pop()  # Backtrack (undo choice)
+    
+    backtrack(0, [])
+    return result
+
+# Example: subsets([1,2,3])
+# Returns: [[], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]]`
+        },
+        {
+          language: "JavaScript",
+          code: `function subsets(nums) {
+    const result = [];
+    
+    function backtrack(start, current) {
+        result.push([...current]);  // Add copy of current subset
+        
+        for (let i = start; i < nums.length; i++) {
+            current.push(nums[i]);  // Choose
+            backtrack(i + 1, current);  // Explore
+            current.pop();  // Backtrack (undo choice)
+        }
+    }
+    
+    backtrack(0, []);
+    return result;
+}
+
+// Example: subsets([1,2,3])
+// Returns: [[], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3]]`
+        }
+      ],
+      complexity: {
+        time: "O(2^n)",
+        space: "O(n)"
+      }
+    }
   },
   {
     id: "dynamic-programming",
@@ -273,6 +676,72 @@ export const topicsData: Topic[] = [
         "Step n = (ways for n-1) + (ways for n-2)"
       ]
     },
-    visualization: "Building solution from bottom up, reusing previous results"
+    visualization: "Building solution from bottom up, reusing previous results",
+    codeExample: {
+      examples: [
+        {
+          language: "Python",
+          code: `def climb_stairs(n):
+    if n <= 2:
+        return n
+    
+    # dp[i] = number of ways to reach step i
+    dp = [0] * (n + 1)
+    dp[1] = 1
+    dp[2] = 2
+    
+    for i in range(3, n + 1):
+        dp[i] = dp[i-1] + dp[i-2]
+    
+    return dp[n]
+
+# Space optimized version
+def climb_stairs_optimized(n):
+    if n <= 2:
+        return n
+    
+    prev2, prev1 = 1, 2
+    for i in range(3, n + 1):
+        current = prev1 + prev2
+        prev2, prev1 = prev1, current
+    
+    return prev1`
+        },
+        {
+          language: "JavaScript",
+          code: `function climbStairs(n) {
+    if (n <= 2) return n;
+    
+    // dp[i] = number of ways to reach step i
+    const dp = new Array(n + 1).fill(0);
+    dp[1] = 1;
+    dp[2] = 2;
+    
+    for (let i = 3; i <= n; i++) {
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+    
+    return dp[n];
+}
+
+// Space optimized version
+function climbStairsOptimized(n) {
+    if (n <= 2) return n;
+    
+    let prev2 = 1, prev1 = 2;
+    for (let i = 3; i <= n; i++) {
+        const current = prev1 + prev2;
+        [prev2, prev1] = [prev1, current];
+    }
+    
+    return prev1;
+}`
+        }
+      ],
+      complexity: {
+        time: "O(n)",
+        space: "O(n) or O(1) optimized"
+      }
+    }
   }
 ];
