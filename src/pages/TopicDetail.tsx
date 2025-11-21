@@ -60,11 +60,11 @@ const TopicDetail = () => {
         </div>
 
         <div className="space-y-8">
-          {/* What it is */}
+          {/* What is this pattern */}
           <section className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
             <div className="flex items-center gap-3 mb-4">
               <Lightbulb className="h-6 w-6 text-primary" />
-              <h2 className="text-3xl font-bold text-foreground">What it is</h2>
+              <h2 className="text-3xl font-bold text-foreground">What is this pattern?</h2>
             </div>
             <Card className="p-8 bg-gradient-to-br from-card to-card/50 border-border/50">
               <p className="text-lg text-foreground/90 leading-relaxed">{topic.whatItIs}</p>
@@ -103,7 +103,7 @@ const TopicDetail = () => {
 
           {/* Template */}
           <section className="animate-fade-in" style={{ animationDelay: "0.5s" }}>
-            <h2 className="text-3xl font-bold mb-4 text-foreground">Step-by-step template</h2>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Plain-English template</h2>
             <Card className="p-8 bg-gradient-to-br from-muted/30 to-muted/10 border-border/50">
               <ol className="space-y-4">
                 {topic.template.map((step, index) => (
@@ -118,9 +118,42 @@ const TopicDetail = () => {
             </Card>
           </section>
 
+          {/* Ultra simple examples */}
+          <section className="animate-fade-in" style={{ animationDelay: "0.55s" }}>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Ultra-simple examples</h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {topic.miniExamples.map((example) => (
+                <Card key={example.title} className="p-6 border-border/60 bg-card/80">
+                  <h3 className="text-xl font-semibold mb-3">{example.title}</h3>
+                  <ul className="space-y-2 text-muted-foreground">
+                    {example.logic.map((line, idx) => (
+                      <li key={line} className="flex gap-2 text-sm">
+                        <span className="font-mono text-primary">{idx + 1}.</span>
+                        <span>{line}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          {/* Beginner-friendly JS template */}
+          <section className="animate-fade-in" style={{ animationDelay: "0.6s" }}>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Beginner-friendly JavaScript template</h2>
+            <Card className="p-0 overflow-hidden border-border/60">
+              <div className="bg-muted/60 px-6 py-3 text-sm font-semibold text-muted-foreground">
+                Use this as the starter code during interviews.
+              </div>
+              <pre className="m-0 rounded-none bg-background p-6 text-sm leading-relaxed">
+                <code>{topic.jsTemplate}</code>
+              </pre>
+            </Card>
+          </section>
+
           {/* Code Example */}
           {topic.codeExample && (
-            <section className="animate-fade-in" style={{ animationDelay: "0.6s" }}>
+            <section className="animate-fade-in" style={{ animationDelay: "0.65s" }}>
               <div className="flex items-center gap-3 mb-4">
                 <Code2 className="h-6 w-6 text-primary" />
                 <h2 className="text-3xl font-bold text-foreground">Code Implementation</h2>
@@ -132,8 +165,42 @@ const TopicDetail = () => {
             </section>
           )}
 
-          {/* Example Problem */}
+          {/* Practice problems */}
           <section className="animate-fade-in" style={{ animationDelay: "0.7s" }}>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Practice problems</h2>
+            <div className="grid gap-4 lg:grid-cols-3">
+              {(
+                [
+                  { key: "easy", label: "Easy reps", color: "border-emerald-400/70" },
+                  { key: "medium", label: "Medium reps", color: "border-primary/60" },
+                  { key: "hard", label: "Stretch goal", color: "border-amber-400/70" }
+                ] as const
+              ).map(({ key, label, color }) => {
+                const problems = topic.practiceProblems[key];
+                if (!problems || problems.length === 0) {
+                  return null;
+                }
+                return (
+                  <Card key={key} className={`flex flex-col gap-3 border-2 ${color} p-5`}>
+                    <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                      {label}
+                    </p>
+                    <div className="space-y-3">
+                      {problems.map((problem) => (
+                        <div key={problem.title} className="rounded-lg bg-muted/40 p-3 text-sm">
+                          <p className="font-semibold text-foreground">{problem.title}</p>
+                          <p className="text-muted-foreground">{problem.prompt}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Example Problem */}
+          <section className="animate-fade-in" style={{ animationDelay: "0.75s" }}>
             <h2 className="text-3xl font-bold mb-4 text-foreground">Example Problem</h2>
             <Card className="overflow-hidden border-border/50">
               <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-6 border-b border-border/50">

@@ -1,3 +1,20 @@
+export interface MiniExample {
+  title: string;
+  logic: string[];
+}
+
+export interface PracticeProblem {
+  title: string;
+  prompt: string;
+  link?: string;
+}
+
+export interface PracticeSet {
+  easy: PracticeProblem[];
+  medium: PracticeProblem[];
+  hard?: PracticeProblem[];
+}
+
 export interface Topic {
   id: string;
   title: string;
@@ -11,6 +28,10 @@ export interface Topic {
     problem: string;
     solution: string[];
   };
+  keywords: string[];
+  miniExamples: MiniExample[];
+  jsTemplate: string;
+  practiceProblems: PracticeSet;
   visualization?: string;
   codeExample?: {
     examples: {
@@ -24,7 +45,9 @@ export interface Topic {
   };
 }
 
-export const topicsData: Topic[] = [
+type CoreTopicFields = Omit<Topic, "keywords" | "miniExamples" | "jsTemplate" | "practiceProblems">;
+
+const baseTopics: CoreTopicFields[] = [
   {
     id: "two-pointers",
     title: "Two Pointers",
@@ -745,3 +768,732 @@ function climbStairsOptimized(n) {
     }
   }
 ];
+
+interface PatternMeta {
+  keywords: string[];
+  miniExamples: MiniExample[];
+  jsTemplate: string;
+  practiceProblems: PracticeSet;
+}
+
+const patternMeta: Record<string, PatternMeta> = {
+  "two-pointers": {
+    keywords: [
+      "two pointers",
+      "pair",
+      "sorted",
+      "converging",
+      "indices",
+      "low high",
+      "opposite ends",
+      "substring"
+    ],
+    miniExamples: [
+      {
+        title: "Closest Pair Sum",
+        logic: [
+          "Start with one pointer at the beginning and one at the end",
+          "Compare their sum to the target to decide which pointer to move",
+          "Shrink toward the center until you find the best pair"
+        ]
+      },
+      {
+        title: "Validate Palindrome",
+        logic: [
+          "Left pointer skips non letters moving forward, right pointer goes backwards",
+          "Compare characters case-insensitively",
+          "If mismatch → stop; if pointers cross → string is a palindrome"
+        ]
+      }
+    ],
+    jsTemplate: `function twoPointerTemplate(nums, check) {
+  let left = 0;
+  let right = nums.length - 1;
+
+  while (left < right) {
+    if (check(nums[left], nums[right], left, right)) {
+      return { leftValue: nums[left], rightValue: nums[right], left, right };
+    }
+
+    // Decide which pointer to move based on your condition
+    left++;
+    // or right--;
+  }
+
+  return null;
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Pair Adds to Target",
+          prompt: "Given a sorted list and a number, return any two values that add to the target."
+        },
+        {
+          title: "Almost Palindrome",
+          prompt: "Check if a string becomes a palindrome after removing non letters and ignoring case."
+        },
+        {
+          title: "Move Zeroes",
+          prompt: "Shift all zeroes to the end of the array while keeping the order of the rest."
+        }
+      ],
+      medium: [
+        {
+          title: "Container With Most Water",
+          prompt: "Pick two lines that hold the most water without inspecting every pair."
+        },
+        {
+          title: "Longest Subarray Within Limit",
+          prompt: "Find the longest subarray where max and min differ by at most limit."
+        },
+        {
+          title: "3Sum Closest",
+          prompt: "Return the sum of three numbers closest to target using sorting + two pointers."
+        }
+      ],
+      hard: [
+        {
+          title: "Trapping Rain Water",
+          prompt: "Compute trapped water using two pointers that track the best left/right wall so far."
+        }
+      ]
+    }
+  },
+  "sliding-window": {
+    keywords: [
+      "sliding window",
+      "window",
+      "substring",
+      "consecutive",
+      "continuous",
+      "interval",
+      "range",
+      "no repeating"
+    ],
+    miniExamples: [
+      {
+        title: "Max Sum of Size k",
+        logic: [
+          "Build a window of size k one element at a time",
+          "Once the window reaches k, slide it forward by subtracting the left value and adding the new right value",
+          "Track the maximum sum seen"
+        ]
+      },
+      {
+        title: "Unique Characters Substring",
+        logic: [
+          "Grow the window by moving the right pointer and storing counts in a map",
+          "If a character repeats, slide the left pointer while reducing counts",
+          "Keep the best window length without duplicates"
+        ]
+      }
+    ],
+    jsTemplate: `function slidingWindowTemplate(arr, condition, { fixedSize } = {}) {
+  let left = 0;
+  let best = 0;
+  const state = new Map();
+
+  for (let right = 0; right < arr.length; right++) {
+    const current = arr[right];
+    state.set(current, (state.get(current) ?? 0) + 1);
+
+    while (!condition({ left, right, state })) {
+      const leftVal = arr[left++];
+      const nextCount = (state.get(leftVal) ?? 0) - 1;
+      if (nextCount <= 0) {
+        state.delete(leftVal);
+      } else {
+        state.set(leftVal, nextCount);
+      }
+    }
+
+    if (!fixedSize || right - left + 1 === fixedSize) {
+      best = Math.max(best, right - left + 1);
+    }
+  }
+
+  return best;
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Max Sum Window",
+          prompt: "Find the maximum sum of any length-k subarray."
+        },
+        {
+          title: "Smallest Window ≥ Target",
+          prompt: "Return the length of the smallest subarray with sum ≥ target."
+        },
+        {
+          title: "Count Good Substrings",
+          prompt: "Count substrings of length 3 with all distinct characters."
+        }
+      ],
+      medium: [
+        {
+          title: "Longest Repeating Replacement",
+          prompt: "Given a string and k replacements, find max window where we can make all chars equal."
+        },
+        {
+          title: "Longest Ones With Flips",
+          prompt: "You may flip k zeroes to ones; find the longest 1s streak."
+        },
+        {
+          title: "Minimum Window Substring",
+          prompt: "Find the smallest substring that contains all characters of t."
+        }
+      ],
+      hard: [
+        {
+          title: "Substring With At Most K Distinct",
+          prompt: "Return the count of substrings that contain at most k distinct characters."
+        }
+      ]
+    }
+  },
+  "hash-map": {
+    keywords: [
+      "hash map",
+      "dictionary",
+      "counting",
+      "frequency",
+      "lookup",
+      "anagram",
+      "substring",
+      "two sum"
+    ],
+    miniExamples: [
+      {
+        title: "Anagram Checker",
+        logic: [
+          "Count each character in the first string",
+          "Subtract the counts using the second string",
+          "If all counts drop to zero, they are anagrams"
+        ]
+      },
+      {
+        title: "First Unique Character",
+        logic: [
+          "Walk through characters and count the frequency",
+          "Scan the string again to find the first character with count 1"
+        ]
+      }
+    ],
+    jsTemplate: `function hashMapTemplate(items, watcher) {
+  const map = new Map();
+
+  for (const item of items) {
+    const nextValue = watcher(map, item);
+    if (nextValue?.done) {
+      return nextValue.result;
+    }
+  }
+
+  return null;
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Two Sum",
+          prompt: "Return indices of the two numbers that add up to a target."
+        },
+        {
+          title: "First Duplicate",
+          prompt: "Return the first element that appears twice in the array."
+        },
+        {
+          title: "Ransom Note",
+          prompt: "Check if you can build a note string using letters from magazine."
+        }
+      ],
+      medium: [
+        {
+          title: "Group Anagrams",
+          prompt: "Group strings that share the same letter counts."
+        },
+        {
+          title: "Longest Consecutive Sequence",
+          prompt: "Find the length of the longest run of consecutive integers."
+        },
+        {
+          title: "Subarray Sum Equals K",
+          prompt: "Count subarrays whose sum equals k using prefix sums in a map."
+        }
+      ],
+      hard: [
+        {
+          title: "Minimum Window Substring",
+          prompt: "Track counts for string t while sliding a window over s."
+        }
+      ]
+    }
+  },
+  "sorting-greedy": {
+    keywords: [
+      "sorting",
+      "greedy",
+      "intervals",
+      "activity selection",
+      "meeting rooms",
+      "difference",
+      "pair",
+      "interval cover"
+    ],
+    miniExamples: [
+      {
+        title: "Meeting Rooms",
+        logic: [
+          "Sort meetings by end time",
+          "Always pick the meeting that finishes earliest",
+          "Skip overlaps and count how many you keep"
+        ]
+      },
+      {
+        title: "Stick Cutting",
+        logic: [
+          "Sort costs or lengths",
+          "Always make the locally cheapest cut",
+          "Greedy choices add up to a global optimum"
+        ]
+      }
+    ],
+    jsTemplate: `function greedyTemplate(items, chooser) {
+  const sorted = [...items].sort(chooser.sortBy);
+  const answer = [];
+
+  for (const item of sorted) {
+    if (chooser.shouldPick(item, answer.at(-1))) {
+      answer.push(item);
+    }
+  }
+
+  return answer;
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Assign Cookies",
+          prompt: "Give smaller cookies to the smallest kids so that more kids are satisfied."
+        },
+        {
+          title: "Maximum Units on Truck",
+          prompt: "Sort boxes by units per box and greedily load truck capacity."
+        },
+        {
+          title: "Relative Sort Array",
+          prompt: "Use sorting with custom order to rearrange numbers."
+        }
+      ],
+      medium: [
+        {
+          title: "Non-overlapping Intervals",
+          prompt: "Remove the fewest intervals so the rest do not overlap."
+        },
+        {
+          title: "Task Scheduler",
+          prompt: "Use counts + greedy selection to spread the most frequent tasks."
+        },
+        {
+          title: "Meeting Rooms II",
+          prompt: "Sort start/end times to compute the minimum number of rooms."
+        }
+      ],
+      hard: [
+        {
+          title: "Minimum Number of Arrows to Burst Balloons",
+          prompt: "Sort intervals by end coordinate and shoot greedily."
+        }
+      ]
+    }
+  },
+  "binary-search": {
+    keywords: [
+      "binary search",
+      "log n",
+      "sorted",
+      "threshold",
+      "first true",
+      "last false",
+      "rotated array",
+      "peak",
+      "interval"
+    ],
+    miniExamples: [
+      {
+        title: "First Bad Version",
+        logic: [
+          "Mid is the candidate version",
+          "If mid is bad, answer is in left half including mid",
+          "If mid is good, move to the right half"
+        ]
+      },
+      {
+        title: "Search Insert Position",
+        logic: [
+          "Binary search the smallest index whose value is ≥ target",
+          "Return that index even if value is not equal"
+        ]
+      }
+    ],
+    jsTemplate: `function binarySearchTemplate(low, high, works) {
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    if (works(mid)) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return low;
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Binary Search",
+          prompt: "Return index of target in a sorted array or -1."
+        },
+        {
+          title: "Guess Number Higher or Lower",
+          prompt: "Use an API to guess a secret number using binary search."
+        },
+        {
+          title: "Square Root",
+          prompt: "Return the integer square root using binary search on the answer."
+        }
+      ],
+      medium: [
+        {
+          title: "Search Rotated Array",
+          prompt: "Split the array into sorted halves to locate target."
+        },
+        {
+          title: "Find Peak Element",
+          prompt: "Use binary search on neighbors to find a peak."
+        },
+        {
+          title: "Koko Eating Bananas",
+          prompt: "Binary search on the eating speed to finish within hours."
+        }
+      ],
+      hard: [
+        {
+          title: "Median of Two Sorted Arrays",
+          prompt: "Binary search the partition using two sorted arrays."
+        }
+      ]
+    }
+  },
+  dfs: {
+    keywords: [
+      "dfs",
+      "depth first",
+      "recursion",
+      "stack",
+      "islands",
+      "components",
+      "backtracking",
+      "tree"
+    ],
+    miniExamples: [
+      {
+        title: "Number of Islands",
+        logic: [
+          "Scan the grid and launch DFS when you see land",
+          "Mark each visited cell so you do not re-count it",
+          "Each DFS call accounts for one island"
+        ]
+      },
+      {
+        title: "Tree Diameter",
+        logic: [
+          "Pick a node, DFS to find the farthest point",
+          "DFS again from that farthest point to get the diameter"
+        ]
+      }
+    ],
+    jsTemplate: `function dfsTemplate(node, visit, seen = new Set()) {
+  if (!node || seen.has(node)) return;
+  seen.add(node);
+  visit(node);
+  for (const neighbor of node.neighbors ?? []) {
+    dfsTemplate(neighbor, visit, seen);
+  }
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Maximum Depth of Binary Tree",
+          prompt: "Traverse down to leaves to compute height."
+        },
+        {
+          title: "Flood Fill",
+          prompt: "Use DFS to recolor connected pixels."
+        },
+        {
+          title: "Path Sum",
+          prompt: "Check if any root-to-leaf path equals target."
+        }
+      ],
+      medium: [
+        {
+          title: "Number of Islands",
+          prompt: "Count connected components of land cells."
+        },
+        {
+          title: "Clone Graph",
+          prompt: "Deep copy every node using DFS + map."
+        },
+        {
+          title: "Word Search",
+          prompt: "Use DFS with backtracking on grid cells."
+        }
+      ],
+      hard: [
+        {
+          title: "Critical Connections",
+          prompt: "Run DFS with timestamps (Tarjan) to find bridges."
+        }
+      ]
+    }
+  },
+  bfs: {
+    keywords: [
+      "bfs",
+      "breadth first",
+      "queue",
+      "shortest path",
+      "level order",
+      "graph",
+      "maze",
+      "consecutive"
+    ],
+    miniExamples: [
+      {
+        title: "Shortest Path in Grid",
+        logic: [
+          "Push the start cell into a queue",
+          "Visit neighbors layer by layer",
+          "Return when the target cell is dequeued"
+        ]
+      },
+      {
+        title: "Word Ladder",
+        logic: [
+          "Each word is a node; edges connect words that differ by one letter",
+          "BFS levels correspond to number of transformations"
+        ]
+      }
+    ],
+    jsTemplate: `function bfsTemplate(start, getNeighbors, isGoal) {
+  const queue = [{ node: start, steps: 0 }];
+  const seen = new Set([start]);
+
+  while (queue.length) {
+    const { node, steps } = queue.shift();
+    if (isGoal(node)) return steps;
+    for (const neighbor of getNeighbors(node)) {
+      if (seen.has(neighbor)) continue;
+      seen.add(neighbor);
+      queue.push({ node: neighbor, steps: steps + 1 });
+    }
+  }
+
+  return -1;
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Minimum Depth of Binary Tree",
+          prompt: "Find the first leaf level."
+        },
+        {
+          title: "Average of Levels",
+          prompt: "Traverse each level using BFS."
+        },
+        {
+          title: "Binary Tree Level Order",
+          prompt: "Return a list of values per level."
+        }
+      ],
+      medium: [
+        {
+          title: "Open the Lock",
+          prompt: "Every wheel turn is an edge; BFS finds fewest turns."
+        },
+        {
+          title: "Word Ladder",
+          prompt: "Find the shortest transformation sequence."
+        },
+        {
+          title: "Rotting Oranges",
+          prompt: "Spread rot level by level and count minutes."
+        }
+      ],
+      hard: [
+        {
+          title: "Shortest Path in Binary Matrix",
+          prompt: "BFS in eight directions to reach the bottom-right cell."
+        }
+      ]
+    }
+  },
+  backtracking: {
+    keywords: [
+      "backtracking",
+      "choices",
+      "undo",
+      "combinations",
+      "permutations",
+      "subset",
+      "search tree"
+    ],
+    miniExamples: [
+      {
+        title: "Generate Parentheses",
+        logic: [
+          "Choose '(' or ')' only when it keeps the string valid",
+          "When length reaches 2n, record the current string"
+        ]
+      },
+      {
+        title: "Permutations",
+        logic: [
+          "Pick an unused number, add it to the path",
+          "Explore deeper, then pop it back out"
+        ]
+      }
+    ],
+    jsTemplate: `function backtrackTemplate(options, path = [], answers = []) {
+  if (done(path)) {
+    answers.push([...path]);
+    return answers;
+  }
+
+  for (const option of options(path)) {
+    path.push(option);
+    backtrackTemplate(options, path, answers);
+    path.pop();
+  }
+
+  return answers;
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Binary Watch",
+          prompt: "Select LEDs that sum to a given time."
+        },
+        {
+          title: "Subsets",
+          prompt: "Generate all subsets of a set."
+        },
+        {
+          title: "Letter Case Permutation",
+          prompt: "Toggle each letter between lower and upper case."
+        }
+      ],
+      medium: [
+        {
+          title: "Combination Sum",
+          prompt: "Choose numbers that add up to target; reuse allowed."
+        },
+        {
+          title: "Permutations II",
+          prompt: "Avoid duplicates while permuting with counts."
+        },
+        {
+          title: "N Queens",
+          prompt: "Place queens row by row and backtrack on conflicts."
+        }
+      ],
+      hard: [
+        {
+          title: "Sudoku Solver",
+          prompt: "Fill digits using DFS with constraint pruning."
+        }
+      ]
+    }
+  },
+  "dynamic-programming": {
+    keywords: [
+      "dynamic programming",
+      "dp",
+      "memo",
+      "overlap",
+      "optimal substructure",
+      "knapsack",
+      "subsequence",
+      "interval"
+    ],
+    miniExamples: [
+      {
+        title: "Climbing Stairs",
+        logic: [
+          "Base cases for step 1 and 2",
+          "Every new step is the sum of the previous two counts"
+        ]
+      },
+      {
+        title: "House Robber",
+        logic: [
+          "At each house, choose max of (rob current + skip next) or (skip current)",
+          "Store the best up to each index"
+        ]
+      }
+    ],
+    jsTemplate: `function dpTemplate(n, compute) {
+  const memo = new Map();
+
+  function helper(state) {
+    if (memo.has(state.key)) return memo.get(state.key);
+    if (state.base) return state.baseValue;
+    const value = compute(state, helper);
+    memo.set(state.key, value);
+    return value;
+  }
+
+  return helper(n);
+}`,
+    practiceProblems: {
+      easy: [
+        {
+          title: "Climbing Stairs",
+          prompt: "Count ways to reach the top taking 1 or 2 steps."
+        },
+        {
+          title: "Min Cost Climbing Stairs",
+          prompt: "Roll up cumulative cost with DP."
+        },
+        {
+          title: "Tribonacci",
+          prompt: "Memoize the tribonacci sequence."
+        }
+      ],
+      medium: [
+        {
+          title: "Coin Change",
+          prompt: "Fewest coins to make a target sum."
+        },
+        {
+          title: "Longest Increasing Subsequence",
+          prompt: "Keep best length ending at each index."
+        },
+        {
+          title: "Palindromic Substrings",
+          prompt: "Use DP to expand palindromes and count them."
+        }
+      ],
+      hard: [
+        {
+          title: "Edit Distance",
+          prompt: "Classic 2D DP comparing prefixes."
+        }
+      ]
+    }
+  }
+};
+
+export const topicsData: Topic[] = baseTopics.map((topic) => ({
+  ...topic,
+  ...patternMeta[topic.id],
+}));
