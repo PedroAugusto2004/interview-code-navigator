@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { BookOpen, Code2, Rocket } from "lucide-react";
+import { Code2, Rocket } from "lucide-react";
 
 import heroImage from "@/assets/hero-image.jpg";
 import { TopicCard } from "@/components/TopicCard";
 import { topicsData } from "@/data/topics";
 import { Button } from "@/components/ui/button";
-import { PatternSearch } from "@/components/PatternSearch";
 
 const sections = [
   {
@@ -58,12 +57,6 @@ const Index = () => {
               and practice reps. Search it, study it, drill it—desktop or mobile.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button asChild size="lg" className="gap-2">
-                <Link to="/#search">
-                  <BookOpen className="h-5 w-5" />
-                  Jump to search
-                </Link>
-              </Button>
               <Button asChild size="lg" variant="outline" className="gap-2">
                 <Link to="/trainer">
                   <Rocket className="h-5 w-5" />
@@ -72,19 +65,6 @@ const Index = () => {
               </Button>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section id="search" className="container mx-auto px-4 py-12">
-        <div className="mx-auto max-w-5xl space-y-6">
-          <div className="text-center space-y-2">
-            <p className="text-sm font-semibold uppercase tracking-wide text-primary">Search every pattern</p>
-            <h2 className="text-3xl font-bold text-foreground">Instant, fuzzy, keyword-friendly.</h2>
-            <p className="text-muted-foreground">
-              Type “substring”, “interval”, “pair”, or any signal you remember — we’ll surface the right patterns.
-            </p>
-          </div>
-          <PatternSearch />
         </div>
       </section>
 
@@ -144,7 +124,7 @@ const Index = () => {
             <p className="text-sm font-semibold uppercase tracking-wide text-amber-500">Quick quizzes</p>
             <h3 className="mt-2 text-xl font-bold text-foreground">Turn hints into reflexes</h3>
             <p className="mt-2 text-muted-foreground">
-              Snap-answer prompts like “no repeating characters” → Sliding Window.
+              Snap-answer prompts like "no repeating characters" → Sliding Window.
             </p>
             <Button asChild variant="outline" className="mt-4 w-full border-amber-400 text-amber-600">
               <Link to="/quizzes">Start quiz</Link>

@@ -5,8 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, ChevronLeft, ChevronRight, Lightbulb, Code2, Zap } from "lucide-react";
 import { topicsData } from "@/data/topics";
+import { videoIds } from "@/data/videoIds";
 import { VisualDiagram } from "@/components/VisualDiagram";
 import { CodeExample } from "@/components/CodeExample";
+import { VideoLesson } from "@/components/VideoLesson";
+import { CodeChallenges } from "@/components/CodeChallenges";
 
 const TopicDetail = () => {
   const { topicId } = useParams();
@@ -21,6 +24,7 @@ const TopicDetail = () => {
 
   const prevTopic = currentIndex > 0 ? topicsData[currentIndex - 1] : null;
   const nextTopic = currentIndex < topicsData.length - 1 ? topicsData[currentIndex + 1] : null;
+  const videoId = videoIds[topic.id];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -60,6 +64,17 @@ const TopicDetail = () => {
         </div>
 
         <div className="space-y-8">
+          {/* Video Lesson */}
+          {videoId && (
+            <section className="animate-fade-in" style={{ animationDelay: "0.05s" }}>
+              <div className="flex items-center gap-3 mb-4">
+                <Zap className="h-6 w-6 text-primary" />
+                <h2 className="text-3xl font-bold text-foreground">Video Lesson</h2>
+              </div>
+              <VideoLesson videoId={videoId} title={`Learn ${topic.title}`} />
+            </section>
+          )}
+
           {/* What is this pattern */}
           <section className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
             <div className="flex items-center gap-3 mb-4">
@@ -145,7 +160,7 @@ const TopicDetail = () => {
               <div className="bg-muted/60 px-6 py-3 text-sm font-semibold text-muted-foreground">
                 Use this as the starter code during interviews.
               </div>
-              <pre className="m-0 rounded-none bg-background p-6 text-sm leading-relaxed">
+              <pre className="m-0 rounded-none bg-background p-6 text-sm leading-relaxed overflow-x-auto">
                 <code>{topic.jsTemplate}</code>
               </pre>
             </Card>
@@ -224,6 +239,44 @@ const TopicDetail = () => {
                 </div>
               </div>
             </Card>
+          </section>
+
+          {/* Code Challenges */}
+          <section className="animate-fade-in" style={{ animationDelay: "0.8s" }}>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Code Challenges</h2>
+            <p className="text-muted-foreground mb-6">Test your understanding with interactive challenges. Write code, run tests, and get hints.</p>
+            <CodeChallenges challenges={{
+              easy: {
+                title: "Easy Challenge",
+                description: "Start with a simple problem to warm up.",
+                starterCode: "function solve(input) {\n  // Your code here\n  return result;\n}",
+                solution: "function solve(input) {\n  return input;\n}",
+                testCases: [
+                  { input: "1", expected: "1" }
+                ],
+                hints: ["Think about the basic case", "What's the simplest solution?"]
+              },
+              medium: {
+                title: "Medium Challenge",
+                description: "A moderate difficulty problem to build skills.",
+                starterCode: "function solve(input) {\n  // Your code here\n  return result;\n}",
+                solution: "function solve(input) {\n  return input;\n}",
+                testCases: [
+                  { input: "1", expected: "1" }
+                ],
+                hints: ["Consider edge cases", "What patterns do you see?"]
+              },
+              hard: {
+                title: "Hard Challenge",
+                description: "A challenging problem to master the pattern.",
+                starterCode: "function solve(input) {\n  // Your code here\n  return result;\n}",
+                solution: "function solve(input) {\n  return input;\n}",
+                testCases: [
+                  { input: "1", expected: "1" }
+                ],
+                hints: ["Optimize for time complexity", "Can you solve it in one pass?"]
+              }
+            }} />
           </section>
         </div>
 

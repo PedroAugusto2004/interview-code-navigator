@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Search } from "lucide-react";
+import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,10 +10,9 @@ import {
   SheetTitle,
   SheetTrigger
 } from "@/components/ui/sheet";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ModeToggle } from "@/components/ModeToggle";
 import { NavLink } from "@/components/NavLink";
-import { PatternSearch } from "@/components/PatternSearch";
+import { HeaderSearch } from "@/components/HeaderSearch";
 
 const navigation = [
   { label: "Patterns", to: "/" },
@@ -25,15 +24,14 @@ const navigation = [
 export const SiteHeader = () => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur supports-[backdrop-filter]:backdrop-blur">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 font-semibold text-lg tracking-tight">
+        <div className="flex h-16 items-center justify-between gap-4">
+          <Link to="/" className="flex items-center gap-2 font-semibold text-lg tracking-tight flex-shrink-0">
             <span className="text-primary">Pattern</span>
-            <span>Navigator</span>
+            <span className="hidden sm:inline">Navigator</span>
           </Link>
 
           <nav className="hidden items-center gap-6 md:flex">
@@ -49,11 +47,10 @@ export const SiteHeader = () => {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-9 w-9" onClick={() => setSearchOpen(true)}>
-              <Search className="h-4 w-4" />
-              <span className="sr-only">Open search</span>
-            </Button>
+          <div className="flex items-center gap-2 flex-1 md:flex-none">
+            <div className="hidden sm:block flex-1 md:flex-none">
+              <HeaderSearch />
+            </div>
             <ModeToggle />
             <div className="md:hidden">
               <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -67,21 +64,26 @@ export const SiteHeader = () => {
                   <SheetHeader>
                     <SheetTitle>Navigate</SheetTitle>
                   </SheetHeader>
-                  <div className="mt-6 flex flex-col gap-3">
-                    {navigation.map((item) => (
-                      <NavLink
-                        key={item.to}
-                        to={item.to}
-                        className="text-base font-semibold text-foreground"
-                        activeClassName="text-primary"
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        {item.label}
-                        {location.pathname === item.to && (
-                          <span className="ml-2 text-xs uppercase text-primary">current</span>
-                        )}
-                      </NavLink>
-                    ))}
+                  <div className="mt-6 space-y-4">
+                    <div>
+                      <HeaderSearch />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      {navigation.map((item) => (
+                        <NavLink
+                          key={item.to}
+                          to={item.to}
+                          className="text-base font-semibold text-foreground"
+                          activeClassName="text-primary"
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {item.label}
+                          {location.pathname === item.to && (
+                            <span className="ml-2 text-xs uppercase text-primary">current</span>
+                          )}
+                        </NavLink>
+                      ))}
+                    </div>
                   </div>
                 </SheetContent>
               </Sheet>
@@ -89,16 +91,6 @@ export const SiteHeader = () => {
           </div>
         </div>
       </div>
-
-      <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
-        <DialogContent className="sm:max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Search patterns instantly</DialogTitle>
-          </DialogHeader>
-          <PatternSearch />
-        </DialogContent>
-      </Dialog>
     </header>
   );
 };
-

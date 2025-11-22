@@ -15,6 +15,15 @@ export interface PracticeSet {
   hard?: PracticeProblem[];
 }
 
+export interface CodeChallenge {
+  title: string;
+  description: string;
+  starterCode: string;
+  solution: string;
+  testCases: { input: string; expected: string }[];
+  hints: string[];
+}
+
 export interface Topic {
   id: string;
   title: string;
@@ -33,6 +42,7 @@ export interface Topic {
   jsTemplate: string;
   practiceProblems: PracticeSet;
   visualization?: string;
+  videoId?: string;
   codeExample?: {
     examples: {
       language: string;
@@ -42,6 +52,11 @@ export interface Topic {
       time: string;
       space: string;
     };
+  };
+  codeChallenges?: {
+    easy: CodeChallenge;
+    medium: CodeChallenge;
+    hard: CodeChallenge;
   };
 }
 
