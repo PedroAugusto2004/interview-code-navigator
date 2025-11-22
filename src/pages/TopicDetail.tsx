@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -14,10 +15,14 @@ import { CodeChallenges } from "@/components/CodeChallenges";
 const TopicDetail = () => {
   const { topicId } = useParams();
   const navigate = useNavigate();
-  
+
   const currentIndex = topicsData.findIndex(t => t.id === topicId);
   const topic = topicsData[currentIndex];
-  
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [topicId]);
+
   if (!topic) {
     return <div>Topic not found</div>;
   }
@@ -173,7 +178,7 @@ const TopicDetail = () => {
                 <Code2 className="h-6 w-6 text-primary" />
                 <h2 className="text-3xl font-bold text-foreground">Code Implementation</h2>
               </div>
-              <CodeExample 
+              <CodeExample
                 examples={topic.codeExample.examples}
                 complexity={topic.codeExample.complexity}
               />
@@ -300,7 +305,7 @@ const TopicDetail = () => {
           ) : (
             <div />
           )}
-          
+
           {nextTopic ? (
             <Button
               variant="outline"
