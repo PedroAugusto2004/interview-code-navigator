@@ -1,73 +1,58 @@
-# Welcome to your Lovable project
+# Interview Code Navigator
 
-## Project info
+## 🚀 Master Coding Interview Patterns
 
-**URL**: https://lovable.dev/projects/ff514fd5-e52b-47e3-a6b3-2880092ce40d
+Interview Code Navigator is a comprehensive, interactive platform designed to help software engineers master the essential patterns required for technical interviews at top tech companies.
 
-## How can I edit this code?
+Unlike traditional study methods that rely on rote memorization, this application focuses on **pattern recognition** and **visual intuition**. By breaking down complex algorithms into interactive visualizations and plain-English explanations, we bridge the gap between theory and application.
 
-There are several ways of editing your application.
+### ✨ Key Features
 
-**Use Lovable**
+-   **Interactive Visualizations**: Dynamic, state-based animations for 9 core patterns (Two Pointers, Sliding Window, DFS/BFS, etc.) that make abstract concepts concrete.
+-   **Curated Video Lessons**: High-quality video explanations sourced from top educators (NeetCode, Reducible, QuanticDev) for each pattern.
+-   **Pattern Recognition Trainer**: A dedicated mode to practice identifying the correct algorithmic approach based on problem signals and constraints.
+-   **Progressive Learning Path**: Structured curriculum moving from "What is this?" to "When to use it" to "Code Implementation".
+-   **Modern Tech Stack**: Built with React, TypeScript, Tailwind CSS, and Shadcn UI for a premium, responsive user experience.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ff514fd5-e52b-47e3-a6b3-2880092ce40d) and start prompting.
+### 🛠️ Technology Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+-   **Frontend**: React 18, TypeScript, Vite
+-   **Styling**: Tailwind CSS, Shadcn UI, Lucide React
+-   **Animation**: Tailwindcss-animate, Custom CSS transitions
+-   **State Management**: React Hooks (useState, useEffect, useMemo)
+-   **Routing**: React Router DOM
 
-**Use your preferred IDE**
+### 📚 Patterns Covered
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1.  **Two Pointers**: Efficient array traversal for sorted sequences.
+2.  **Sliding Window**: Dynamic subarray optimization.
+3.  **Hash Map**: Frequency tracking and O(1) lookups.
+4.  **Sorting & Greedy**: Optimal local choices for global solutions.
+5.  **Binary Search**: Logarithmic search in sorted datasets.
+6.  **DFS (Depth-First Search)**: Deep exploration of trees and graphs.
+7.  **BFS (Breadth-First Search)**: Level-order traversal and shortest paths.
+8.  **Backtracking**: Exhaustive search with pruning.
+9.  **Dynamic Programming**: Optimization via memoization and subproblems.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 🏃‍♂️ Getting Started
 
-Follow these steps:
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/interview-code-navigator.git
+    ```
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+3.  **Start the development server**
+    ```bash
+    npm run dev
+    ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 🤝 Contributing
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/ff514fd5-e52b-47e3-a6b3-2880092ce40d) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+*Built with precision and passion for the engineering community.*
