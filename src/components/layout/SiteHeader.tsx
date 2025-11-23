@@ -31,7 +31,7 @@ export const SiteHeader = () => {
         <div className="flex h-16 items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2 font-semibold text-lg tracking-tight flex-shrink-0">
             <span className="text-primary">Pattern</span>
-            <span className="hidden sm:inline">Navigator</span>
+            <span>Navigator</span>
           </Link>
 
           <nav className="hidden items-center gap-6 md:flex">
@@ -47,7 +47,7 @@ export const SiteHeader = () => {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 flex-1 md:flex-none">
+          <div className="flex items-center gap-2 flex-1 md:flex-none justify-end">
             <div className="hidden sm:block flex-1 md:flex-none">
               <HeaderSearch />
             </div>
